@@ -1,8 +1,10 @@
 name: cf-grpc-module
 channels:
-  - defaults
   - conda-forge
+  - defaults
 dependencies:
+  - python=3.9
+  - pip=
   - colorama=
   - numpy=
   - pandas=
@@ -13,41 +15,8 @@ dependencies:
   - matplotlib=
   - requests=
   - pydantic=
-  - _libgcc_mutex=0.1
-  - _openmp_mutex=4.5
-  - ca-certificates=2022.3.29
-  - certifi=2021.10.8
-  - importlib-metadata=4.11.3
-  - importlib_metadata=4.11.3
-  - jsonpickle=2.0.0
-  - ld_impl_linux-64=2.35.1
-  - libffi=3.3
-  - libgcc-ng=9.3.0
-  - libgomp=9.3.0
-  - libstdcxx-ng=9.3.0
-  - ncurses=6.3
-  - openssl=1.1.1n
-  - pip=21.2.4
-  - python=3.9.12
-  - readline=8.1.2
-  - setuptools=61.2.0
-  - sqlite=3.38.2
-  - tk=8.6.11
-  - tzdata=2022a
-  - wheel=0.37.1
-  - xz=5.2.5
-  - zipp=3.7.0
-  - zlib=1.2.12
+  - jsonpickle
   - pip:
-    - betterproto==2.0.0b4
     - grpcio==1.44.0
-    - grpcio-tools==1.44.0
-    - grpclib==0.4.3rc2
-    - h2==4.1.0
-    - hpack==4.0.0
-    - hyperframe==6.0.1
-    - multidict==6.0.2
     - protobuf==3.20.1
-    - python-dateutil==2.8.2
-    - six==1.16.0
     - python-dotenv==0.20.0
