@@ -1,0 +1,6 @@
+[submodule "ms_grpc"]
+	path = ms_grpc
+	url = git@github.com:Emb3rs-Project/ms-grpc.git
+[submodule "module"]
+	path = module
+	url = git@github.com:Emb3rs-Project/p-core-functionalities.git
