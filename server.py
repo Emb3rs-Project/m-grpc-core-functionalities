@@ -49,15 +49,15 @@ class CFModule(CFModuleServicer):
 
         result = convert_sources(in_var=in_var, kb=kb)
         return ConvertSourceOutput(
-            all_sources_info=jsonpickle.encode(result.all_sources_info, unpicklable=True),
-            teo_string=jsonpickle.encode(result.teo_string, unpicklable=True),
-            input_fuel=jsonpickle.encode(result.input_fuel, unpicklable=True),
-            output_fuel=jsonpickle.encode(result.output_fuel, unpicklable=True),
-            output=jsonpickle.encode(result.output, unpicklable=True),
-            input=jsonpickle.encode(result.input, unpicklable=True),
-            n_supply_list=jsonpickle.encode(result.n_supply_list, unpicklable=True),
-            teo_capacity_factor_group=jsonpickle.encode(result.teo_capacity_factor_group, unpicklable=True),
-            teo_dhn=jsonpickle.encode(result.teo_dhn, unpicklable=True),
+            all_sources_info=jsonpickle.encode(result['all_sources_info'], unpicklable=True),
+            teo_string=jsonpickle.encode(result['teo_string'], unpicklable=True),
+            input_fuel=jsonpickle.encode(result['input_fuel'], unpicklable=True),
+            output_fuel=jsonpickle.encode(result['output_fuel'], unpicklable=True),
+            output=jsonpickle.encode(result['output'], unpicklable=True),
+            input=jsonpickle.encode(result['input'], unpicklable=True),
+            n_supply_list=jsonpickle.encode(result['n_supply_list'], unpicklable=True),
+            teo_capacity_factor_group=jsonpickle.encode(result['teo_capacity_factor_group'], unpicklable=True),
+            teo_dhn=jsonpickle.encode(result['teo_dhn'], unpicklable=True),
         )
 
 
@@ -67,7 +67,7 @@ class CFModule(CFModuleServicer):
         }
         result = greenhouse(in_var=in_var)
         return CharacterizationSinkOutput(
-            hot_stream=jsonpickle.encode(result.hot_stream, unpicklable=True),
+            hot_stream=jsonpickle.encode(result['hot_stream'], unpicklable=True),
         )
 
     def building(self, request: PlatformOnlyInput, context):
@@ -76,8 +76,8 @@ class CFModule(CFModuleServicer):
         }
         result = building(in_var=in_var,kb=kb)
         return CharacterizationSinkOutput(
-            hot_stream=jsonpickle.encode(result.hot_stream, unpicklable=True),
-            cold_stream=jsonpickle.encode(result.cold_stream, unpicklable=True),
+            hot_stream=jsonpickle.encode(result['hot_stream'], unpicklable=True),
+            cold_stream=jsonpickle.encode(result['cold_stream'], unpicklable=True),
         )
 
     def convert_orc(self, request: PlatformOnlyInput, context):
@@ -86,7 +86,7 @@ class CFModule(CFModuleServicer):
         }
         result = convert_orc(in_var=in_var,kb=kb)
         return ConvertOrcOutput(
-            best_options=jsonpickle.encode(result.best_options, unpicklable=True),
+            best_options=jsonpickle.encode(result['best_options'], unpicklable=True),
         )
 
     def convert_pinch(self, request: PlatformOnlyInput, context):
@@ -95,9 +95,9 @@ class CFModule(CFModuleServicer):
         }
         result = convert_pinch(in_var=in_var,kb=kb)
         return ConvertPinchOutput(
-            co2_optimization=jsonpickle.encode(result.co2_optimization, unpicklable=True),
-            energy_recovered_optimization=jsonpickle.encode(result.energy_recovered_optimization, unpicklable=True),
-            energy_investment_optimization=jsonpickle.encode(result.energy_investment_optimization, unpicklable=True),
+            co2_optimization=jsonpickle.encode(result['co2_optimization'], unpicklable=True),
+            energy_recovered_optimization=jsonpickle.encode(result['energy_recovered_optimization'], unpicklable=True),
+            energy_investment_optimization=jsonpickle.encode(result['energy_investment_optimization'], unpicklable=True),
         )
 
     def simple_user(self, request: PlatformOnlyInput, context):
@@ -106,7 +106,7 @@ class CFModule(CFModuleServicer):
         }
         result = simple_user(in_var=in_var)
         return ConvertPinchOutput(
-            streams=jsonpickle.encode(result.streams, unpicklable=True),
+            streams=jsonpickle.encode(result['streams'], unpicklable=True),
         )
 
 def serve():
