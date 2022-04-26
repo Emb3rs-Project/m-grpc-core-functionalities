@@ -6,10 +6,18 @@ import grpc
 import jsonpickle
 
 from cf.cf_pb2_grpc import CFModuleServicer, add_CFModuleServicer_to_server
-from cf.cf_pb2 import PlatformOnlyInput, ConvertSinkOutput, ConvertSourceInput, ConvertSourceOutput
+from cf.cf_pb2 import PlatformOnlyInput, ConvertSinkOutput, ConvertSourceInput, ConvertSourceOutput, \
+    CharacterizationSinkOutput, ConvertOrcOutput, ConvertPinchOutput
 
 from module.Sink.simulation.Convert.convert_sinks import convert_sinks
 from module.Source.simulation.Convert.convert_sources import convert_sources
+
+from module.Source.simulation.Heat_Recovery.ORC.convert_orc import convert_orc
+from module.Source.simulation.Heat_Recovery.Pinch.convert_pinch import convert_pinch
+from module.Sink.characterization.Building.building import building
+from module.Sink.characterization.Building.greenhouse import greenhouse
+from module.General.Simple_User.simple_user import simple_user
+
 from module.utilities.kb_data import kb
 
 dotenv.load_dotenv()
@@ -52,6 +60,54 @@ class CFModule(CFModuleServicer):
             teo_dhn=jsonpickle.encode(result.teo_dhn, unpicklable=True),
         )
 
+
+    def greenhouse(self, request: PlatformOnlyInput, context):
+        in_var = {
+            "platform": jsonpickle.decode(request.platform),
+        }
+        result = greenhouse(in_var=in_var)
+        return CharacterizationSinkOutput(
+            hot_stream=jsonpickle.encode(result.hot_stream, unpicklable=True),
+        )
+
+    def building(self, request: PlatformOnlyInput, context):
+        in_var = {
+            "platform": jsonpickle.decode(request.platform),
+        }
+        result = building(in_var=in_var,kb=kb)
+        return CharacterizationSinkOutput(
+            hot_stream=jsonpickle.encode(result.hot_stream, unpicklable=True),
+            cold_stream=jsonpickle.encode(result.cold_stream, unpicklable=True),
+        )
+
+    def convert_orc(self, request: PlatformOnlyInput, context):
+        in_var = {
+            "platform": jsonpickle.decode(request.platform),
+        }
+        result = convert_orc(in_var=in_var,kb=kb)
+        return ConvertOrcOutput(
+            best_options=jsonpickle.encode(result.best_options, unpicklable=True),
+        )
+
+    def convert_pinch(self, request: PlatformOnlyInput, context):
+        in_var = {
+            "platform": jsonpickle.decode(request.platform),
+        }
+        result = convert_pinch(in_var=in_var,kb=kb)
+        return ConvertPinchOutput(
+            co2_optimization=jsonpickle.encode(result.co2_optimization, unpicklable=True),
+            energy_recovered_optimization=jsonpickle.encode(result.energy_recovered_optimization, unpicklable=True),
+            energy_investment_optimization=jsonpickle.encode(result.energy_investment_optimization, unpicklable=True),
+        )
+
+    def simple_user(self, request: PlatformOnlyInput, context):
+        in_var = {
+            "platform": jsonpickle.decode(request.platform),
+        }
+        result = simple_user(in_var=in_var)
+        return ConvertPinchOutput(
+            streams=jsonpickle.encode(result.streams, unpicklable=True),
+        )
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
