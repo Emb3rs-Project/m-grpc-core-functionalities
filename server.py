@@ -10,6 +10,7 @@ from cf.cf_pb2 import PlatformOnlyInput, ConvertSinkOutput, ConvertSourceInput, 
 
 from module.Sink.simulation.Convert.convert_sinks import convert_sinks
 from module.Source.simulation.Convert.convert_sources import convert_sources
+from module.utilities.kb_data import kb
 
 dotenv.load_dotenv()
 
@@ -24,11 +25,11 @@ class CFModule(CFModuleServicer):
             "platform": jsonpickle.decode(request.platform)
         }
 
-        result = convert_sinks(in_var=in_var, kb={})
+        result = convert_sinks(in_var=in_var, kb=kb)
         return ConvertSinkOutput(
-            all_sinks_info=jsonpickle.encode(result.all_sinks_info, unpicklable=True),
-            n_demand_list=jsonpickle.encode(result.n_demand_list, unpicklable=True),
-            teo_demand_factor_group=jsonpickle.encode(result.teo_demand_factor_group, unpicklable=True),
+            all_sinks_info=jsonpickle.encode(result["all_sinks_info"], unpicklable=True),
+            n_demand_list=jsonpickle.encode(result["n_demand_list"], unpicklable=True),
+            teo_demand_factor_group=jsonpickle.encode(result["teo_demand_factor_group"], unpicklable=True),
         )
 
     def convert_source(self, request: ConvertSourceInput, context):
@@ -38,7 +39,7 @@ class CFModule(CFModuleServicer):
             "cf-module": jsonpickle.decode(request.cf_module)
         }
 
-        result = convert_sources(in_var=in_var, kb={})
+        result = convert_sources(in_var=in_var, kb=kb)
         return ConvertSourceOutput(
             all_sources_info=jsonpickle.encode(result.all_sources_info, unpicklable=True),
             teo_string=jsonpickle.encode(result.teo_string, unpicklable=True),
