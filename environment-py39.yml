@@ -1,16 +1,18 @@
-name: market-grpc-module
+name: cf-grpc-module
 channels:
   - defaults
   - conda-forge
 dependencies:
-  - python-dotenv=
   - colorama=
-  - cvxpy=
-  - matplotlib=
   - numpy=
   - pandas=
-  - pyscipopt=
-  - scipy=
+  - geopy=
+  - pvlib-python=
+  - urllib3=
+  - beautifulsoup4=
+  - matplotlib=
+  - requests=
+  - pydantic=
   - _libgcc_mutex=0.1
   - _openmp_mutex=4.5
   - ca-certificates=2022.3.29
@@ -26,14 +28,11 @@ dependencies:
   - ncurses=6.3
   - openssl=1.1.1n
   - pip=21.2.4
-  - pydantic=1.9.0
   - python=3.9.12
   - readline=8.1.2
   - setuptools=61.2.0
   - sqlite=3.38.2
   - tk=8.6.11
-  - typing-extensions=4.1.1
-  - typing_extensions=4.1.1
   - tzdata=2022a
   - wheel=0.37.1
   - xz=5.2.5
@@ -51,3 +50,4 @@ dependencies:
     - protobuf==3.20.1
     - python-dateutil==2.8.2
     - six==1.16.0
+    - python-dotenv==0.20.0
