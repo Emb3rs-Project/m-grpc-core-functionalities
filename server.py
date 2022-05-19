@@ -6,16 +6,17 @@ import grpc
 import jsonpickle
 
 from cf.cf_pb2_grpc import CFModuleServicer, add_CFModuleServicer_to_server
-from cf.cf_pb2 import CharacterizationSourceOutput, PlatformOnlyInput, ConvertSinkOutput, ConvertSourceInput, ConvertSourceOutput, \
+from cf.cf_pb2 import CharacterizationInput, CharacterizationOutput, CharacterizationSourceOutput, PlatformOnlyInput, ConvertSinkOutput, ConvertSourceInput, ConvertSourceOutput, \
     CharacterizationSinkOutput, ConvertOrcOutput, ConvertPinchOutput
+from module.Sink.characterization.building_adjust_capacity import building_adjust_capacity
 
-from module.Sink.simulation.Convert.convert_sinks import convert_sinks
+from module.Sink.simulation.convert_sinks import convert_sinks
 from module.Source.simulation.Convert.convert_sources import convert_sources
 
 from module.Source.simulation.Heat_Recovery.ORC.convert_orc import convert_orc
 from module.Source.simulation.Heat_Recovery.Pinch.convert_pinch import convert_pinch
-from module.Sink.characterization.Building.building import building
-from module.Sink.characterization.Building.greenhouse import greenhouse
+from module.Sink.characterization.building import building
+from module.Sink.characterization.greenhouse import greenhouse
 from module.General.Simple_User.simple_user import simple_user
 
 from module.utilities.kb_data import kb
@@ -122,6 +123,15 @@ class CFModule(CFModuleServicer):
         result = simple_user(in_var=in_var)
         return CharacterizationSourceOutput(
             streams=jsonpickle.encode(result['streams'], unpicklable=False),
+        )
+
+    def char_adjust_capacity(self, request: CharacterizationInput, context):
+        in_var = {
+            "platform" : jsonpickle.decode(request.platform)
+        }
+        result = building_adjust_capacity(in_var=in_var)
+        return CharacterizationOutput(
+            stream=jsonpickle.encode(result, unpicklable=True)
         )
 
 
