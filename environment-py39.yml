@@ -15,7 +15,8 @@ dependencies:
   - matplotlib=
   - requests=
   - pydantic=
-  - jsonpickle
+  - jsonpickle=
+  - mpld3=0.5.7
   - pip:
     - grpcio==1.44.0
     - protobuf==3.20.1
