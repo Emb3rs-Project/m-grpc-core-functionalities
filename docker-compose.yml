@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  cf-module:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    network_mode: host
+
+    volumes:
+      - conda-data:/opt/conda/envs
+
+
+volumes:
+  conda-data: null

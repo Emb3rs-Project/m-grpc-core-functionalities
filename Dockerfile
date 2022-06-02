@@ -5,12 +5,13 @@ COPY . .
 
 
 # Update conda if a newer version is available
-RUN --mount=type=cache,target=/opt/conda/pkgs mamba update mamba;
+RUN --mount=type=cache,target=/opt/conda/pkgs mamba update mamba
 
 # Create Environment
-RUN --mount=type=cache,target=/opt/conda/pkgs mamba env create --file environment-py39.yml --force;
+RUN --mount=type=cache,target=/opt/conda/pkgs mamba env create --file environment-py39.yml --force
 
-# Add grpc to PythonPath
-ENV PYTHONPATH=ms_grpc/plibs
+RUN mamba init bash
+RUN mamba activate cf-grpc-module
+ENTRYPOINT PYTHONPATH=ms_grpc/plibs python -u server.py
 
-ENTRYPOINT ["conda", "run", "-n","cf-grpc-module", "python","server.py"]
+EXPOSE 50051
