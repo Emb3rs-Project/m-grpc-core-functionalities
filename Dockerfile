@@ -1,17 +1,18 @@
-FROM condaforge/mambaforge-pypy3
+FROM continuumio/miniconda3
 
 WORKDIR /app
+
 COPY . .
 
+RUN --mount=type=cache,target=/opt/conda/pkgs conda env create -f environment-test.yml
 
-# Update conda if a newer version is available
-RUN --mount=type=cache,target=/opt/conda/pkgs mamba update mamba
+RUN echo "conda activage cf-grpc-module" >> ~/.bashrc
+# Make RUN commands use `bash --login`:
+SHELL ["/bin/bash", "--login", "-c"]
 
-# Create Environment
-RUN --mount=type=cache,target=/opt/conda/pkgs mamba env create --file environment-py39.yml --force
+RUN python -V
 
-RUN mamba init bash
-RUN mamba activate cf-grpc-module
-ENTRYPOINT PYTHONPATH=ms_grpc/plibs python -u server.py
-
+# RUN source ~/.bashrc
 EXPOSE 50051
+
+ENTRYPOINT [ "conda" , "env", "list" ]
