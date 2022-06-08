@@ -10,3 +10,11 @@ services:
     
     ports:
       - 50051:50051
+
+    networks:
+      - embers
+
+
+networks:
+  embers:
+    driver: bridge  
