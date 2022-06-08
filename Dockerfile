@@ -1,18 +1,23 @@
-FROM python:3.10-slim as compile
+FROM embers-base:latest as build
 
-RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y build-essential gcc
+# creating the environment
+COPY environment-py39.yml .
+RUN --mount=type=cache,target=/opt/conda/pkgs mamba env create -f environment-py39.yml
 
-RUN python -m venv /opt/venv
-ENV PATH='/opt/venv/bin:$PATH'
+# Installing Conda Pack
+RUN --mount=type=cache,target=/opt/conda/pkgs conda install -c conda-forge conda-pack
 
-WORKDIR /usr/src/app
-COPY requirements.txt .
+# Use conda-pack to create a standalone enviornment
+# in /venv:
+RUN conda-pack -n cf-grpc-module -o /tmp/env.tar && \
+    mkdir /venv && cd /venv && tar xf /tmp/env.tar && \
+    rm /tmp/env.tar
 
-RUN pip install --upgrade pip \
-    && pip install -r requirements.txt
+# We've put venv in same path it'll be in final image,
+# so now fix up paths:
+RUN /venv/bin/conda-unpack
 
-FROM python:3.10-slim as build
+FROM python:3.10-slim as runtime
 
 # setup config
 ENV GROUP_ID=1000 \
@@ -21,15 +26,16 @@ ENV GROUP_ID=1000 \
 ENV PYTHONUNBUFFERED=1 \
     PYTHONIOENCODING=UTF-8
 
-COPY --from=compile /opt/venv /opt/venv
-ENV PATH='/opt/venv/bin:$PATH'
+COPY --from=build /venv /venv
 
 # Configuring app
 WORKDIR /app
 COPY . .
 
-ENV PYTHONPATH=ms_grpc/plibs
+ENV PYTHONPATH=ms_grpc/plibs:module
 
 EXPOSE 50051
 
-CMD [ "python", "-u" , "server.py" ]
+SHELL [ "/bin/bash", "-c" ]
+ENTRYPOINT source /venv/bin/activate && \
+    python -u server.py
