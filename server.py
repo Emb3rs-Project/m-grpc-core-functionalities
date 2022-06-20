@@ -19,6 +19,7 @@ from module.Source.simulation.Heat_Recovery.Pinch.convert_pinch import convert_p
 from module.Sink.characterization.building import building
 from module.Sink.characterization.greenhouse import greenhouse
 from module.General.Simple_User.simple_user import simple_user
+from module.Source.simulation.Heat_Recovery.convert_pinch_isolated_streams import convert_pinch_isolated_streams
 
 from module.utilities.kb_data import kb
 
@@ -43,6 +44,17 @@ class CFModule(CFModuleServicer):
                 result["n_demand_list"]),
             teo_demand_factor_group=json.dumps(
                 result["teo_demand_factor_group"]),
+        )
+
+    def convert_pinch_isolated(self, request, context):
+        in_var = {
+            "platform": jsonpickle.decode(request.platform)
+        }
+        result = convert_pinch_isolated_streams(in_var=in_var)
+        return ConvertPinchOutput(
+            co2_optimization = json.dumps(result['co2_optimization']),
+            energy_recovered_optimization = json.dumps(result['energy_recovered_optimization']),
+            energy_investment_optimization = json.dumps(result['energy_investment_optimization']),
         )
 
     def convert_source(self, request: ConvertSourceInput, context):
