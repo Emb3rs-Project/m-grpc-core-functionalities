@@ -38,4 +38,5 @@ EXPOSE 50051
 
 SHELL [ "/bin/bash", "-c" ]
 ENTRYPOINT source /venv/bin/activate && \
+    PYTHONPATH=ms_grpc/plibs:module \
     python -u server.py
