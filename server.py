@@ -50,7 +50,7 @@ class CFModule(CFModuleServicer):
         in_var = {
             "platform": jsonpickle.decode(request.platform)
         }
-        result = convert_pinch_isolated_streams(in_var=in_var)
+        result = convert_pinch_isolated_streams(in_var=in_var, kb=kb)
         return ConvertPinchOutput(
             co2_optimization = json.dumps(result['co2_optimization']),
             energy_recovered_optimization = json.dumps(result['energy_recovered_optimization']),
