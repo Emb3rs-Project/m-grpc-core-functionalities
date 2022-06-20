@@ -51,10 +51,9 @@ class CFModule(CFModuleServicer):
             "platform": jsonpickle.decode(request.platform)
         }
         result = convert_pinch_isolated_streams(in_var=in_var, kb=kb)
-        return ConvertPinchOutput(
-            co2_optimization = json.dumps(result['co2_optimization']),
-            energy_recovered_optimization = json.dumps(result['energy_recovered_optimization']),
-            energy_investment_optimization = json.dumps(result['energy_investment_optimization']),
+        return ConvertOrcOutput(
+            best_options=json.dumps(result['best_options']),
+            report=result['report']
         )
 
     def convert_source(self, request: ConvertSourceInput, context):
@@ -146,7 +145,11 @@ class CFModule(CFModuleServicer):
 
 
 def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10),
+        options=[
+        ('grpc.max_send_message_length', -1),
+        ('grpc.max_receive_message_length', -1),
+    ])
     add_CFModuleServicer_to_server(CFModule(), server)
 
     server.add_insecure_port(
