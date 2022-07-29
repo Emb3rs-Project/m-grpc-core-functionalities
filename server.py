@@ -7,7 +7,8 @@ import jsonpickle
 import json
 
 from cf.cf_pb2_grpc import CFModuleServicer, add_CFModuleServicer_to_server
-from cf.cf_pb2 import CharacterizationInput, CharacterizationOutput, CharacterizationSourceOutput, PlatformOnlyInput, ConvertSinkOutput, ConvertSourceInput, ConvertSourceOutput, \
+from cf.cf_pb2 import CharacterizationInput, CharacterizationOutput, CharacterizationSourceOutput, \
+    PlatformOnlyInput, ConvertSinkOutput, ConvertSourceInput, ConvertSourceOutput, \
     CharacterizationSinkOutput, ConvertOrcOutput, ConvertPinchOutput
 from module.Sink.characterization.building_adjust_capacity import building_adjust_capacity
 
@@ -24,7 +25,6 @@ from module.Source.simulation.Heat_Recovery.convert_pinch_isolated_streams impor
 from module.utilities.kb_data import kb
 
 dotenv.load_dotenv()
-
 
 class CFModule(CFModuleServicer):
 
@@ -146,7 +146,7 @@ class CFModule(CFModuleServicer):
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10),
-        options=[
+                         options=[
         ('grpc.max_send_message_length', -1),
         ('grpc.max_receive_message_length', -1),
     ])
