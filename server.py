@@ -66,15 +66,12 @@ class CFModule(CFModuleServicer):
     def char_greenhouse(self, request: PlatformOnlyInput, context):
         in_var = {"platform": jsonpickle.decode(request.platform)}
         result = greenhouse(in_var=in_var)
-        return CharacterizationSinkOutput(hot_stream=json.dumps(result['hot_stream']))
+        return CharacterizationSinkOutput(streams=json.dumps(result['streams']))
 
     def char_building(self, request: PlatformOnlyInput, context):
         in_var = {"platform": jsonpickle.decode(request.platform)}
         result = building(in_var=in_var, kb=kb)
-        return CharacterizationSinkOutput(
-            hot_stream=json.dumps(result['hot_stream']),
-            cold_stream=json.dumps(result['cold_stream']),
-        )
+        return CharacterizationSinkOutput(streams=json.dumps(result['streams']))
 
     def convert_orc(self, request: PlatformOnlyInput, context):
         in_var = {"platform": jsonpickle.decode(request.platform)}
