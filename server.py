@@ -53,9 +53,9 @@ class CFModule(CFModuleServicer):
         result = convert_sources(in_var=in_var, kb=kb)
         return ConvertSourceOutput(
             all_sources_info=json.dumps(result['all_sources_info']),
-            teo_string=json.dumps(result['teo_string']),
-            input_fuel=json.dumps(result['input_fuel']),
-            output_fuel=json.dumps(result['output_fuel']),
+            teo_string=result['teo_string'],
+            input_fuel=result['input_fuel'],
+            output_fuel=result['output_fuel'],
             output=json.dumps(result['output']),
             input=json.dumps(result['input']),
             n_supply_list=json.dumps(result['n_supply_list']),
