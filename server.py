@@ -32,7 +32,9 @@ class CFModule(CFModuleServicer):
         result = convert_sinks(in_var=in_var, kb=kb)
         return ConvertSinkOutput(
             all_sinks_info=json.dumps(result["all_sinks_info"]),
+            n_grid_specific=json.dumps(result["n_grid_specific"]),
             n_demand_list=json.dumps(result["n_demand_list"]),
+            n_thermal_storage=json.dumps(result["n_thermal_storage"]),
             teo_demand_factor_group=json.dumps(result["teo_demand_factor_group"]),
         )
 
@@ -53,6 +55,7 @@ class CFModule(CFModuleServicer):
         result = convert_sources(in_var=in_var, kb=kb)
         return ConvertSourceOutput(
             all_sources_info=json.dumps(result['all_sources_info']),
+            ex_grid=json.dumps(result['ex_grid']) if isinstance(result["ex_grid"], dict) else {},
             teo_string=result['teo_string'],
             input_fuel=result['input_fuel'],
             output_fuel=result['output_fuel'],
