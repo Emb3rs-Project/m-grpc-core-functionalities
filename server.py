@@ -55,7 +55,7 @@ class CFModule(CFModuleServicer):
         result = convert_sources(in_var=in_var, kb=kb)
         return ConvertSourceOutput(
             all_sources_info=json.dumps(result['all_sources_info']),
-            ex_grid=json.dumps(result['ex_grid']) if isinstance(result["ex_grid"], dict) else {},
+            ex_grid=json.dumps(result['ex_grid']),
             teo_string=result['teo_string'],
             input_fuel=result['input_fuel'],
             output_fuel=result['output_fuel'],
