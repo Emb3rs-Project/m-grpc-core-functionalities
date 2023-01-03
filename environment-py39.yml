@@ -4,20 +4,20 @@ channels:
   - defaults
 dependencies:
   - python=3.9
-  - pip=22.1
-  - colorama=0.4.4
-  - numpy=1.22.3
+  - pip=
+  - colorama=
+  - numpy=1.22.4
   - pandas=1.4.2
-  - geopy=2.2.0
-  - pvlib-python=0.9.1
-  - urllib3=1.26.3
-  - beautifulsoup4=4.11.1
-  - matplotlib=3.5.2
-  - requests=2.27.1
-  - pydantic=1.9.0
-  - jsonpickle=2.2.0
-  - mpld3=0.5.7
+  - geopy=
+  - pvlib-python=
+  - urllib3=
+  - beautifulsoup4=
+  - matplotlib=
+  - requests=
+  - pydantic=
+  - jsonpickle=
+  - mpld3=
   - pip:
     - grpcio==1.44.0
     - protobuf==3.20.1
-    - python-dotenv==0.20.0
+    - python-dotenv
