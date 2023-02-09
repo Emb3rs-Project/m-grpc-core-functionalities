@@ -45,8 +45,7 @@ class CFModule(CFModuleServicer):
 
     def convert_pinch_isolated(self, request, context):
         in_var = {"platform": jsonpickle.decode(request.platform)}
-        with SimulationWrapper(project_path=PROJECT_PATH):
-            result = convert_pinch_isolated_streams(in_var=in_var, kb=kb)
+        result = convert_pinch_isolated_streams(in_var=in_var, kb=kb)
         return ConvertOrcOutput(
             best_options=json.dumps(result['best_options']),
             report=result['report'],
@@ -75,14 +74,12 @@ class CFModule(CFModuleServicer):
 
     def char_greenhouse(self, request: PlatformOnlyInput, context):
         in_var = {"platform": jsonpickle.decode(request.platform)}
-        with SimulationWrapper(project_path=PROJECT_PATH):
-            result = greenhouse(in_var=in_var)
+        result = greenhouse(in_var=in_var)
         return CharacterizationSinkOutput(streams=json.dumps(result['streams']))
 
     def char_building(self, request: PlatformOnlyInput, context):
         in_var = {"platform": jsonpickle.decode(request.platform)}
-        with SimulationWrapper(project_path=PROJECT_PATH):
-            result = building(in_var=in_var, kb=kb)
+        result = building(in_var=in_var, kb=kb)
         return CharacterizationSinkOutput(streams=json.dumps(result['streams']))
 
     def convert_orc(self, request: PlatformOnlyInput, context):
@@ -105,8 +102,7 @@ class CFModule(CFModuleServicer):
 
     def char_simple(self, request: PlatformOnlyInput, context):
         in_var = {"platform": jsonpickle.decode(request.platform)}
-        with SimulationWrapper(project_path=PROJECT_PATH):
-            result = simple_user(in_var=in_var)
+        result = simple_user(in_var=in_var)
         return CharacterizationSourceOutput(streams=json.dumps(result['streams']))
 
     # --> The function building_adjust_capacity was removed from module
