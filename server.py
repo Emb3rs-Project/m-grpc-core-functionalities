@@ -1,10 +1,13 @@
 import json
 import os
 from concurrent import futures
+from pathlib import Path
 
 import dotenv
 import grpc
 import jsonpickle
+
+from base.wrappers import SimulationWrapper
 from cf.cf_pb2_grpc import CFModuleServicer, add_CFModuleServicer_to_server
 from cf.cf_pb2 import (
     # CharacterizationInput, CharacterizationOutput,
@@ -23,13 +26,15 @@ from module.src.Source.simulation.Heat_Recovery.Pinch.convert_pinch import conve
 from module.src.utilities.kb_data import kb
 
 dotenv.load_dotenv()
+PROJECT_PATH = str(Path.cwd().parent)
 
 
 class CFModule(CFModuleServicer):
 
     def convert_sink(self, request: PlatformOnlyInput, context) -> ConvertSinkOutput:
         in_var = {"platform": jsonpickle.decode(request.platform)}
-        result = convert_sinks(in_var=in_var, kb=kb)
+        with SimulationWrapper(project_path=PROJECT_PATH):
+            result = convert_sinks(in_var=in_var, kb=kb)
         return ConvertSinkOutput(
             all_sinks_info=json.dumps(result["all_sinks_info"]),
             n_grid_specific=json.dumps(result["n_grid_specific"]),
@@ -52,7 +57,8 @@ class CFModule(CFModuleServicer):
             "gis_module": jsonpickle.decode(request.gis_module),
             "cf_module": jsonpickle.decode(request.cf_module)
         }
-        result = convert_sources(in_var=in_var, kb=kb)
+        with SimulationWrapper(project_path=PROJECT_PATH):
+            result = convert_sources(in_var=in_var, kb=kb)
         return ConvertSourceOutput(
             all_sources_info=json.dumps(result['all_sources_info']),
             ex_grid=json.dumps(result['ex_grid']),
@@ -78,7 +84,8 @@ class CFModule(CFModuleServicer):
 
     def convert_orc(self, request: PlatformOnlyInput, context):
         in_var = {"platform": jsonpickle.decode(request.platform)}
-        result = convert_orc(in_var=in_var, kb=kb)
+        with SimulationWrapper(project_path=PROJECT_PATH):
+            result = convert_orc(in_var=in_var, kb=kb)
         return ConvertOrcOutput(
             best_options=json.dumps(result['best_options']),
             report=result['report'],
@@ -86,7 +93,8 @@ class CFModule(CFModuleServicer):
 
     def convert_pinch(self, request: PlatformOnlyInput, context):
         in_var = {"platform": jsonpickle.decode(request.platform)}
-        result = convert_pinch(in_var=in_var, kb=kb)
+        with SimulationWrapper(project_path=PROJECT_PATH):
+            result = convert_pinch(in_var=in_var, kb=kb)
         return ConvertPinchOutput(
             best_options=json.dumps(result['best_options']),
             report=result['report'],
