@@ -10,12 +10,10 @@ import jsonpickle
 from base.wrappers import SimulationWrapper
 from cf.cf_pb2_grpc import CFModuleServicer, add_CFModuleServicer_to_server
 from cf.cf_pb2 import (
-    # CharacterizationInput, CharacterizationOutput,
     CharacterizationSourceOutput, PlatformOnlyInput, ConvertSinkOutput, ConvertSourceInput,
     ConvertSourceOutput, CharacterizationSinkOutput, ConvertOrcOutput, ConvertPinchOutput,
 )
 from module.src.General.Simple_User.simple_user import simple_user
-# from module.src.Sink.characterization.building_adjust_capacity import building_adjust_capacity
 from module.src.Sink.characterization.building import building
 from module.src.Sink.characterization.greenhouse import greenhouse
 from module.src.Sink.simulation.convert_sinks import convert_sinks
@@ -26,7 +24,7 @@ from module.src.Source.simulation.Heat_Recovery.Pinch.convert_pinch import conve
 from module.src.utilities.kb_data import kb
 
 dotenv.load_dotenv()
-PROJECT_PATH = str(Path.cwd().parent)
+PROJECT_PATH = str(Path.cwd())
 
 
 class CFModule(CFModuleServicer):
@@ -104,12 +102,6 @@ class CFModule(CFModuleServicer):
         in_var = {"platform": jsonpickle.decode(request.platform)}
         result = simple_user(in_var=in_var)
         return CharacterizationSourceOutput(streams=json.dumps(result['streams']))
-
-    # --> The function building_adjust_capacity was removed from module
-    # def char_adjust_capacity(self, request: CharacterizationInput, context):
-    #     in_var = {"platform": jsonpickle.decode(request.platform)}
-    #     result = building_adjust_capacity(in_var=in_var)
-    #     return CharacterizationOutput(stream=json.dumps(result))
 
 
 def serve():
