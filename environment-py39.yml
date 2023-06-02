@@ -9,6 +9,7 @@ dependencies:
   - numpy=1.*
   - pandas=1.*
   - geopy=2.*
+  - pvlib-python=0.*
   - beautifulsoup4=4.*
   - matplotlib=3.5
   - requests=2.*
